@@ -8,36 +8,28 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.List;
 
+import static org.junit.Assert.assertThrows;
+
 @RunWith(MockitoJUnitRunner.class)
 public class LionTest {
 
-    private static String SEX = "Самец";
-    private static String SEX_TROW = "Лев";
+    private static final String SEX = "Самец";
+    private static final String SEX_THROW = "Лев";
 
     //Проверяем, что метод getKittens() класса Lion вызывает метод getKittens() класса Feline, используем мок
     @Test
-    public void lionGetKittensCallInFeline() {
+    public void lionGetKittensCallInFeline() throws Exception {
         Feline feline = Mockito.mock(Feline.class);
-        Lion lion = null;
-        try {
-            lion = new Lion(SEX, feline);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        Lion lion = new Lion(SEX, feline);
         lion.getKittens();
         Mockito.verify(feline, Mockito.times(1)).getKittens();
     }
 
     //Проверяем, что метод getKittens() класса Lion возвращает значение количества котят, используем стаб
     @Test
-    public void lionGetKittensCount() {
+    public void lionGetKittensCount() throws Exception {
         Feline feline = Mockito.mock(Feline.class);
-        Lion lion = null;
-        try {
-            lion = new Lion(SEX, feline);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        Lion lion = new Lion(SEX, feline);
         int expectedCount = 1;
         Mockito.when(feline.getKittens()).thenReturn(1);
         int actualCount = lion.getKittens();
@@ -49,12 +41,7 @@ public class LionTest {
     @Test
     public void lionGetFoodCallInFeline() throws Exception {
         Feline feline = Mockito.mock(Feline.class);
-        Lion lion = null;
-        try {
-            lion = new Lion(SEX, feline);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        Lion lion = new Lion(SEX, feline);
         lion.getFood();
         Mockito.verify(feline, Mockito.times(1)).getFood("Хищник");
     }
@@ -63,30 +50,19 @@ public class LionTest {
     @Test
     public void lionGetFoodList() throws Exception {
         Feline feline = Mockito.mock(Feline.class);
-        Lion lion = null;
-        try {
-            lion = new Lion(SEX, feline);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        Lion lion = new Lion(SEX, feline);
         List<String> expected = List.of("Животные", "Птицы", "Рыба");
-        Mockito.when(feline.getFood("Хищник")).thenReturn(List.of("Животные", "Птицы", "Рыба"));
+        Mockito.when(feline.getFood("Хищник")).thenReturn(expected);
         List<String> actual =  lion.getFood();
         Assert.assertEquals(expected, actual);
     }
 
     //Проверяем исключение при создании объекта класса Lion
     @Test
-    public void lionTestTrow() {
+    public void lionTestThrow() throws Exception {
         Feline feline = Mockito.mock(Feline.class);
-        Exception exception = null;
-        try {
-            Lion lion = new Lion(SEX_TROW, feline);
-        } catch (Exception e) {
-            exception = e;
-        }
+        Exception exception = assertThrows(Exception.class, ()-> new Lion(SEX_THROW, feline));
         String expectedResult = "Используйте допустимые значения пола животного - самец или самка";
-        String actualResult = exception != null ? exception.getMessage() : null;
-        Assert.assertEquals(expectedResult, actualResult);
+        Assert.assertEquals(expectedResult, exception.getMessage());
     }
 }

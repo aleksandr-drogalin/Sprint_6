@@ -37,7 +37,7 @@ public class CatTest {
         Feline feline = Mockito.mock(Feline.class);
         Cat cat = new Cat(feline);
         List<String> expected = List.of("Животные", "Птицы", "Рыба");
-        Mockito.when(feline.eatMeat()).thenReturn(List.of("Животные", "Птицы", "Рыба"));
+        Mockito.when(feline.eatMeat()).thenReturn(expected);
         List<String> actual =  cat.getFood();
         Assert.assertEquals("Списки не совпадают",expected, actual);
     }

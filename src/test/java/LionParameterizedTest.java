@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.mockito.Mockito;
 
 @RunWith(Parameterized.class)
 public class LionParameterizedTest {
@@ -30,16 +31,9 @@ public class LionParameterizedTest {
 
     //Тестовый метод
     @Test
-        public void testDoesHaveMane() {
-          Feline feline = new Feline();
-          Lion lion;
-        {
-            try {
-                lion = new Lion(sex, feline);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
+        public void testDoesHaveMane() throws Exception{
+        Feline feline = Mockito.mock(Feline.class);
+        Lion lion = new Lion(sex, feline);
         Boolean actualResult = lion.doesHaveMane();
         Assert.assertEquals("Логические выражения не равны", expectedResult, actualResult);
     }
